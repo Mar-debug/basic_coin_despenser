@@ -14,12 +14,19 @@ class SimpleCalcCubit extends Cubit<SimpleCalcState> {
     num totalChange = tender - cost;
     Map<String, num> breakdown = {};
 
-    for(var i = 0; i < validDenominations.length; i++){
-      var tempNum = totalChange%validDenominations[i];
+    //iterating through the cash choices to see what change to give
+    for(var i =0; i< validDenominations.length; i++){
+      //this is to calculate how much of each note or coins to give for the change
+      var tempNum = (totalChange/validDenominations[i]).floor();
+      totalChange= totalChange%validDenominations[i];
+
+      //makes sure to only show the values that's being used
       if(tempNum > 0){
-        breakdown[validDenominations[i].toString()]=tempNum;
+        breakdown['${validDenominations[i]}'] = tempNum;
       }
     }
+    //totalChange is used again because its been overwritten in the for loop
+  totalChange = tender - cost;
 
     emit(SimpleCalcCalculated(breakdown, totalChange));
   }
